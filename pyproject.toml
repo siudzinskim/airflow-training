@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "airflow-training"
+version = "0.1.0"
+description = ""
+authors = ["marcin <marcin@siudzinski.eu>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+apache-airflow = ">2.7.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

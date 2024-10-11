@@ -1,0 +1,21 @@
+### IntelliJ ###
+.idea/
+airflow-training.iml
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+
+### CD ###
+dags/
+!dags/__dags__
+
+### Terraform ###
+infra/.terraform/
+infra/terraform.lock.hcl
+infra/terraform.tfstate.lock.info
+
+### Poetry ###
+poetry.lock

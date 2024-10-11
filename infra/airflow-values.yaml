@@ -1,0 +1,42 @@
+# enable embeded PostgreSQL
+postgresql:
+  enabled: true
+
+createUserJob:
+  useHelmHooks: false
+  applyCustomEnv: false
+
+migrateDatabaseJob:
+  useHelmHooks: false
+  applyCustomEnv: false
+
+scheduler:
+  extraVolumes:
+    - name: dags
+      hostPath:
+        path: /tmp/dags/
+        type: Directory
+  extraVolumeMounts:
+    - name: dags
+      mountPath: /opt/airflow/dags
+      readOnly: true
+
+workers:
+  extraVolumes:
+    - name: dags
+      hostPath:
+        path: /tmp/dags
+        type: Directory
+  extraVolumeMounts:
+    - name: dags
+      mountPath: /opt/airflow/dags
+      readOnly: true
+
+airflow:
+  connections:
+    - conn_id: http_dummyjson
+      conn_type: http
+      host: https://dummyjson.com/
+
+    - conn_id: local_fs
+      conn_type: fs
