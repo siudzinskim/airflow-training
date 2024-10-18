@@ -12,7 +12,8 @@ with DAG(
         dag_id='file_sensor_dag',
         start_date=datetime(2024, 10, 9),
         schedule=None,  # No scheduled run, trigger manually or via API
-        catchup=False
+        catchup=False,
+        tags=['module 002', 'sensors']
 ) as dag:
     # Define a dummy start task
     start = DummyOperator(task_id='start')
@@ -57,7 +58,8 @@ with DAG(
         dag_id='file_creator_dag',
         start_date=datetime(2024, 10, 9),
         schedule=None,
-        catchup=False
+        catchup=False,
+        tags=['module 002', 'sensors']
 ) as dag:
     # Define a BashOperator task that waits for 120 seconds
     wait = BashOperator(

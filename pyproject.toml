@@ -6,7 +6,7 @@ authors = ["marcin <marcin@siudzinski.eu>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-apache-airflow = ">2.7.0"
+apache-airflow = "~2.9"
 
 [tool.poetry.dev-dependencies]
 

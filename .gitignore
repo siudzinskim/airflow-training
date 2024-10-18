@@ -14,8 +14,9 @@ dags/
 
 ### Terraform ###
 infra/.terraform/
-infra/terraform.lock.hcl
+infra/.terraform.lock.hcl
 infra/terraform.tfstate.lock.info
+infra/terraform.tfstate*
 
 ### Poetry ###
 poetry.lock

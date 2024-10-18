@@ -16,7 +16,8 @@ with DAG(
         dag_id='operator_examples',
         start_date=datetime(2024, 10, 9),
         schedule=None,
-        catchup=False
+        catchup=False,
+        tags=['module 002', 'operators']
 ) as dag:
     # Define a dummy start task
     start = DummyOperator(task_id='start')
