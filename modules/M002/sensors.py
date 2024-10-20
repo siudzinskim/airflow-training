@@ -2,10 +2,26 @@
 from datetime import datetime
 
 from airflow import DAG
+from airflow import settings
+from airflow.models import Connection
 from airflow.operators.bash import BashOperator
 from airflow.operators.dummy import DummyOperator
+from airflow.operators.python import PythonOperator
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.sensors.filesystem import FileSensor
+
+def create_conn():
+    session = settings.Session()
+    if session.query(Connection).filter(Connection.conn_id != 'fs_default').first():
+        new_conn = Connection(conn_id=f'fs_default',
+                              conn_type='fs')
+
+        session = settings.Session()
+        session.add(new_conn)
+        session.commit()
+        print("Connection created")
+    else:
+        print("Connection already exists")
 
 # DAG that waits for the file and triggers another DAG
 with DAG(
@@ -15,8 +31,11 @@ with DAG(
         catchup=False,
         tags=['module 002', 'sensors']
 ) as dag:
-    # Define a dummy start task
-    start = DummyOperator(task_id='start')
+    # Define a start task creating connection if it does not exist
+    start = PythonOperator(
+        task_id='start',
+        python_callable=create_conn
+    )
 
     # Define a FileSensor task that waits for a file to exist
     wait_for_file = FileSensor(

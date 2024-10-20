@@ -15,13 +15,18 @@ from airflow.providers.http.operators.http import SimpleHttpOperator
 # - schedule: The schedule for the DAG. In this case, it's set to None, meaning the DAG will not run on a schedule.
 # - catchup: Whether to catch up on past runs. In this case, it's set to False, meaning the DAG will not run for past dates.
 def create_conn():
-    new_conn = Connection(conn_id=f'http_dummyjson',
-                                  conn_type='http',
-                                  host="https://dummyjson.com/")
-
     session = settings.Session()
-    session.add(new_conn)
-    session.commit()
+    if session.query(Connection).filter(Connection.conn_id != 'http_dummyjson').first():
+        new_conn = Connection(conn_id=f'http_dummyjson',
+                              conn_type='http',
+                              host="https://dummyjson.com/")
+
+        session = settings.Session()
+        session.add(new_conn)
+        session.commit()
+        print("Connection created")
+    else:
+        print("Connection already exists")
 
 with DAG(
         dag_id='operator_examples',
@@ -43,12 +48,7 @@ with DAG(
     # Define a PythonOperator task that executes a Python function
     def python_function():
         # check if connection exists and create connection if it doesn't exist
-        session = settings.Session()
-        if session.query(Connection).filter(Connection.conn_id != 'http_dummyjson').first():
-            create_conn()
-            print("Connection created")
-        else:
-            print("Connection already exists")
+        create_conn()
         print("Hello from Python Operator!")
 
 
