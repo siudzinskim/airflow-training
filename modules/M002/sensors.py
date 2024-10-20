@@ -12,7 +12,9 @@ from airflow.sensors.filesystem import FileSensor
 
 def create_conn():
     session = settings.Session()
-    if session.query(Connection).filter(Connection.conn_id != 'fs_default').first():
+    if session.query(Connection).filter(Connection.conn_id == 'fs_default').first():
+        print("Connection already exists")
+    else:
         new_conn = Connection(conn_id=f'fs_default',
                               conn_type='fs')
 
@@ -20,8 +22,6 @@ def create_conn():
         session.add(new_conn)
         session.commit()
         print("Connection created")
-    else:
-        print("Connection already exists")
 
 # DAG that waits for the file and triggers another DAG
 with DAG(

@@ -16,7 +16,9 @@ from airflow.providers.http.operators.http import SimpleHttpOperator
 # - catchup: Whether to catch up on past runs. In this case, it's set to False, meaning the DAG will not run for past dates.
 def create_conn():
     session = settings.Session()
-    if session.query(Connection).filter(Connection.conn_id != 'http_dummyjson').first():
+    if session.query(Connection).filter(Connection.conn_id == 'http_dummyjson').first():
+        print("Connection already exists")
+    else:
         new_conn = Connection(conn_id=f'http_dummyjson',
                               conn_type='http',
                               host="https://dummyjson.com/")
@@ -25,8 +27,6 @@ def create_conn():
         session.add(new_conn)
         session.commit()
         print("Connection created")
-    else:
-        print("Connection already exists")
 
 with DAG(
         dag_id='operator_examples',
