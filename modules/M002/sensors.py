@@ -1,6 +1,6 @@
 # /home/marcin/dev/airflow-training/airflow-training/modules/M002/sensors.py
-from datetime import datetime
 
+import pendulum
 from airflow import DAG
 from airflow import settings
 from airflow.models import Connection
@@ -9,6 +9,7 @@ from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import PythonOperator
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.sensors.filesystem import FileSensor
+
 
 def create_conn():
     session = settings.Session()
@@ -23,10 +24,11 @@ def create_conn():
         session.commit()
         print("Connection created")
 
+
 # DAG that waits for the file and triggers another DAG
 with DAG(
         dag_id='file_sensor_dag',
-        start_date=datetime(2024, 10, 9),
+        start_date=pendulum.yesterday(),
         schedule=None,  # No scheduled run, trigger manually or via API
         catchup=False,
         tags=['module 002', 'sensors']
@@ -75,7 +77,7 @@ with DAG(
 # DAG that creates the file after a delay
 with DAG(
         dag_id='file_creator_dag',
-        start_date=datetime(2024, 10, 9),
+        start_date=pendulum.yesterday(),
         schedule=None,
         catchup=False,
         tags=['module 002', 'sensors']

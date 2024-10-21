@@ -1,16 +1,16 @@
+import pendulum
 from airflow.decorators import dag, task
 from airflow.utils.trigger_rule import TriggerRule
-from datetime import datetime
+
 
 @dag(
     dag_id='taskflow_benefits_demo',
-    start_date=datetime(2024, 10, 10),
+    start_date=pendulum.yesterday(),
     schedule=None,
     catchup=False,
     tags=['module 002', 'taskflow']
 )
 def taskflow_demo():
-
     @task
     def extract_data_from_api():
         # Simulate extracting data from an API
@@ -59,5 +59,6 @@ def taskflow_demo():
 
     analyze_data(order_summary["total_amount"], order_summary["order_count"], customer_count)
     send_notification(order_summary["total_amount"])
+
 
 taskflow_demo_dag = taskflow_demo()

@@ -1,5 +1,4 @@
-from datetime import datetime
-
+import pendulum
 from airflow import DAG
 from airflow import settings
 from airflow.models import Connection
@@ -8,6 +7,7 @@ from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import PythonOperator
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 from airflow.providers.http.operators.http import SimpleHttpOperator
+
 
 # Define a DAG with the following parameters:
 # - dag_id: The unique identifier for the DAG.
@@ -28,9 +28,10 @@ def create_conn():
         session.commit()
         print("Connection created")
 
+
 with DAG(
         dag_id='operator_examples',
-        start_date=datetime(2024, 10, 9),
+        start_date=pendulum.yesterday(),
         schedule=None,
         catchup=False,
         tags=['module 002', 'operators']
