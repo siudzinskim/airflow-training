@@ -12,7 +12,7 @@ catchup_flag = True
     start_date=start_date,
     schedule="@daily",
     catchup=catchup_flag,
-    tags=['module 002', 'taskflow', 'daily']
+    tags=['module 003', 'taskflow', 'daily']
 )
 def taskflow_bash_dag_daily():
     @task(task_id="start")
@@ -64,7 +64,7 @@ def taskflow_bash_dag_daily():
     start_date=start_date,
     schedule="@once",
     catchup=catchup_flag,
-    tags=['module 002', 'taskflow', 'once']
+    tags=['module 003', 'taskflow', 'once']
 )
 def taskflow_bash_dag_once():
     @task(task_id="start")
@@ -116,7 +116,7 @@ def taskflow_bash_dag_once():
     start_date=start_date,
     schedule="0 */6 * * *",
     catchup=catchup_flag,
-    tags=['module 002', 'taskflow', 'every_6_hours']
+    tags=['module 003', 'taskflow', 'every_6_hours']
 )
 def taskflow_bash_dag_every_6_hours():
     @task(task_id="start")
@@ -168,7 +168,7 @@ def taskflow_bash_dag_every_6_hours():
     start_date=start_date,
     schedule="*/2 * * * *",
     catchup=False,
-    tags=['module 002', 'taskflow', 'every_2_minutes']
+    tags=['module 003', 'taskflow', 'every_2_minutes']
 )
 def taskflow_bash_dag_every_second_minute():
     @task(task_id="start")
@@ -221,7 +221,7 @@ def taskflow_bash_dag_every_second_minute():
     schedule="@continuous",
     catchup=False,
     max_active_runs=1,
-    tags=['module 002', 'taskflow', 'continuous']
+    tags=['module 003', 'taskflow', 'continuous']
 )
 def taskflow_bash_dag_continuous():
     @task(task_id="start")

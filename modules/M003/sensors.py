@@ -1,4 +1,4 @@
-# /home/marcin/dev/airflow-training/airflow-training/modules/M002/sensors.py
+# /home/marcin/dev/airflow-training/airflow-training/modules/M003/sensors.py
 
 import pendulum
 from airflow import DAG
@@ -31,7 +31,7 @@ with DAG(
         start_date=pendulum.yesterday(),
         schedule=None,  # No scheduled run, trigger manually or via API
         catchup=False,
-        tags=['module 002', 'sensors']
+        tags=['module 003', 'sensors']
 ) as dag:
     # Define a start task creating connection if it does not exist
     start = PythonOperator(
@@ -80,7 +80,7 @@ with DAG(
         start_date=pendulum.yesterday(),
         schedule=None,
         catchup=False,
-        tags=['module 002', 'sensors']
+        tags=['module 003', 'sensors']
 ) as dag:
     # Define a BashOperator task that waits for 120 seconds
     wait = BashOperator(

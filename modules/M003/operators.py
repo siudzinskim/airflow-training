@@ -34,7 +34,7 @@ with DAG(
         start_date=pendulum.yesterday(),
         schedule=None,
         catchup=False,
-        tags=['module 002', 'operators']
+        tags=['module 003', 'operators']
 ) as dag:
     # Define a dummy start task
     start = DummyOperator(task_id='start')

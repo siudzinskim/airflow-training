@@ -8,7 +8,7 @@ from airflow.utils.trigger_rule import TriggerRule
     start_date=pendulum.yesterday(),
     schedule=None,
     catchup=False,
-    tags=['module 002', 'taskflow']
+    tags=['module 003', 'taskflow']
 )
 def taskflow_demo():
     @task

@@ -19,7 +19,7 @@ with DAG(
         start_date=pendulum.yesterday(),
         schedule=None,
         catchup=False,
-        tags=['module 002', 'xcom']
+        tags=['module 003', 'xcom']
 ) as dag:
     push_xcom_task = PythonOperator(
         task_id='push_xcom_task',
