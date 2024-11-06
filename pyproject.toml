@@ -5,8 +5,9 @@ description = ""
 authors = ["marcin <marcin@siudzinski.eu>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">3.8,<3.13"
 apache-airflow = "~2.9"
+pendulum = ">2.0.0"
 
 [tool.poetry.dev-dependencies]
 
