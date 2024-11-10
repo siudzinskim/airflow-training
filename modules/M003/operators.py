@@ -1,22 +1,40 @@
-from datetime import datetime
-
+import pendulum
 from airflow import DAG
+from airflow import settings
+from airflow.models import Connection
 from airflow.operators.bash import BashOperator
 from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import PythonOperator
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 from airflow.providers.http.operators.http import SimpleHttpOperator
 
+
 # Define a DAG with the following parameters:
 # - dag_id: The unique identifier for the DAG.
 # - start_date: The date when the DAG should start running.
 # - schedule: The schedule for the DAG. In this case, it's set to None, meaning the DAG will not run on a schedule.
 # - catchup: Whether to catch up on past runs. In this case, it's set to False, meaning the DAG will not run for past dates.
+def create_conn():
+    session = settings.Session()
+    if session.query(Connection).filter(Connection.conn_id == 'http_dummyjson').first():
+        print("Connection already exists")
+    else:
+        new_conn = Connection(conn_id=f'http_dummyjson',
+                              conn_type='http',
+                              host="https://dummyjson.com/")
+
+        session = settings.Session()
+        session.add(new_conn)
+        session.commit()
+        print("Connection created")
+
+
 with DAG(
         dag_id='operator_examples',
-        start_date=datetime(2024, 10, 9),
+        start_date=pendulum.yesterday(),
         schedule=None,
-        catchup=False
+        catchup=False,
+        tags=['module 003', 'operators']
 ) as dag:
     # Define a dummy start task
     start = DummyOperator(task_id='start')
@@ -30,6 +48,8 @@ with DAG(
 
     # Define a PythonOperator task that executes a Python function
     def python_function():
+        # check if connection exists and create connection if it doesn't exist
+        create_conn()
         print("Hello from Python Operator!")
 
 
@@ -42,7 +62,7 @@ with DAG(
     http_task = SimpleHttpOperator(
         task_id='http_task',
         method='GET',
-        http_conn_id='http_default',  # Make sure you have a connection named 'http_default'
+        http_conn_id='http_dummyjson',  # Make sure you have a connection named 'http_default'
         endpoint='/quotes',
         log_response=True
     )

@@ -1,21 +1,43 @@
-# /home/marcin/dev/airflow-training/airflow-training/modules/M002/sensors.py
-from datetime import datetime
+# /home/marcin/dev/airflow-training/airflow-training/modules/M003/sensors.py
 
+import pendulum
 from airflow import DAG
+from airflow import settings
+from airflow.models import Connection
 from airflow.operators.bash import BashOperator
 from airflow.operators.dummy import DummyOperator
+from airflow.operators.python import PythonOperator
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.sensors.filesystem import FileSensor
+
+
+def create_conn():
+    session = settings.Session()
+    if session.query(Connection).filter(Connection.conn_id == 'fs_default').first():
+        print("Connection already exists")
+    else:
+        new_conn = Connection(conn_id=f'fs_default',
+                              conn_type='fs')
+
+        session = settings.Session()
+        session.add(new_conn)
+        session.commit()
+        print("Connection created")
+
 
 # DAG that waits for the file and triggers another DAG
 with DAG(
         dag_id='file_sensor_dag',
-        start_date=datetime(2024, 10, 9),
+        start_date=pendulum.yesterday(),
         schedule=None,  # No scheduled run, trigger manually or via API
-        catchup=False
+        catchup=False,
+        tags=['module 003', 'sensors']
 ) as dag:
-    # Define a dummy start task
-    start = DummyOperator(task_id='start')
+    # Define a start task creating connection if it does not exist
+    start = PythonOperator(
+        task_id='start',
+        python_callable=create_conn
+    )
 
     # Define a FileSensor task that waits for a file to exist
     wait_for_file = FileSensor(
@@ -55,9 +77,10 @@ with DAG(
 # DAG that creates the file after a delay
 with DAG(
         dag_id='file_creator_dag',
-        start_date=datetime(2024, 10, 9),
+        start_date=pendulum.yesterday(),
         schedule=None,
-        catchup=False
+        catchup=False,
+        tags=['module 003', 'sensors']
 ) as dag:
     # Define a BashOperator task that waits for 120 seconds
     wait = BashOperator(
