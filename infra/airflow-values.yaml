@@ -14,7 +14,7 @@ scheduler:
   extraVolumes:
     - name: dags
       hostPath:
-        path: /tmp/dags/
+        path: ${REPO_PATH}/dags/
         type: Directory
   extraVolumeMounts:
     - name: dags
@@ -25,12 +25,19 @@ workers:
   extraVolumes:
     - name: dags
       hostPath:
-        path: /tmp/dags
+        path: ${REPO_PATH}/dags
+        type: Directory
+    - name: data
+      hostPath:
+        path: ${REPO_PATH}/data
         type: Directory
   extraVolumeMounts:
     - name: dags
       mountPath: /opt/airflow/dags
       readOnly: true
+    - name: data
+      mountPath: /opt/airflow/data
+      readOnly: false
 
 airflow:
   connections:
@@ -40,3 +47,8 @@ airflow:
 
     - conn_id: local_fs
       conn_type: fs
+
+extraPipPackages:
+  - "faker==33.0.0"
+installPipPackages:
+  - "faker==33.0.0"

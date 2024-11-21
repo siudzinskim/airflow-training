@@ -8,9 +8,11 @@ airflow-training.iml
 ### Mac OS ###
 .DS_Store
 
-### CD ###
-dags/
-!dags/__dags__
+### Airflow mounts ###
+dags/*
+data/*
+!dags/.__dags__
+!data/.__data__
 
 ### Terraform ###
 infra/.terraform/

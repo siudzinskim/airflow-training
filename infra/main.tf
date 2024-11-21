@@ -21,7 +21,13 @@ resource "helm_release" "airflow" {
   name       = "airflow"
   version    = "1.15.0"
   namespace  = kubernetes_namespace.airflow.metadata[0].name
-  values     = [file("${path.root}/airflow-values.yaml")]
+  # values     = [file("${path.root}/airflow-values.yaml")]
+  values = [templatefile("${path.root}/airflow-values.yaml",
+     {
+       REPO_PATH = local.repo_path
+     }
+   )]
+  # timeout    = "90"
   timeout    = "360"
 }
 
