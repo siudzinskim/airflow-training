@@ -10,7 +10,6 @@ from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 
 # Import from your local script
-from random_transactions import generate_transactions
 
 
 @dag(

@@ -11,6 +11,9 @@ migrateDatabaseJob:
   applyCustomEnv: false
 
 scheduler:
+#  env:
+#   - name: _PIP_ADDITIONAL_REQUIREMENTS
+#     value: "duckdb faker"
   extraVolumes:
     - name: dags
       hostPath:
@@ -22,6 +25,9 @@ scheduler:
       readOnly: true
 
 workers:
+#  env:
+#   - name: _PIP_ADDITIONAL_REQUIREMENTS
+#     value: "duckdb faker"
   extraVolumes:
     - name: dags
       hostPath:
@@ -48,7 +54,3 @@ airflow:
     - conn_id: local_fs
       conn_type: fs
 
-extraPipPackages:
-  - "faker==33.0.0"
-installPipPackages:
-  - "faker==33.0.0"

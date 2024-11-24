@@ -53,7 +53,7 @@ def generate_transactions(num_transactions=25):  # Parameter for number of trans
 
     # Create filename with timestamp
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-    filename = f"../data/transactions_{timestamp}.json"  # New line delimited JSON
+    filename = f"../../data/transactions/transactions_{timestamp}.json"  # New line delimited JSON
 
     with open(filename, 'w') as jsonfile:
         for transaction in transactions:
