@@ -9,8 +9,6 @@ from airflow.operators.bash import BashOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 
-# Import from your local script
-
 
 @dag(
     dag_id="lab2_scheduling_and_dependencies",
@@ -45,5 +43,6 @@ def generate_transaction_data():
     end = EmptyOperator(task_id="end")
 
     start >> create_folder >> generate_transactions_task >> wait >> end
+
 
 generate_transaction_data()

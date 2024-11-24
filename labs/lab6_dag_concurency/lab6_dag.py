@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 import os
+import random
 import shutil
 import time
 from glob import glob
-import random
 
 import pendulum
-
 from airflow.decorators import dag, task
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import get_current_context
@@ -30,7 +29,6 @@ def stage_files(data_dir: str, **context):
         shutil.move(file, subdir)
 
 
-
 def merge_data(subdir_id: str, data_dir: str, **context):
     print(f"Merging data in subdir: {subdir_id}")
     time.sleep(random.randint(60, 120))
@@ -41,7 +39,6 @@ def denormalize_data(subdir_id: str, data_dir: str, **context):
     print(f"Denormalizing data in subdir: {subdir_id}")
     time.sleep(random.randint(60, 120))
     # ... (Your denormalize logic for files in subdir) ...
-
 
 
 def archive_files(subdir_id: str, data_dir: str, **context):
@@ -57,8 +54,6 @@ def archive_files(subdir_id: str, data_dir: str, **context):
     for file in glob(f"{subdir_path}/*"):
         print(f"Moving: {file} to {processed_dir}")
         shutil.move(file, processed_dir)
-
-
 
 
 @dag(
@@ -93,18 +88,10 @@ def lab6_parallel_processing_taskflow():
     def stage_files_taskflow(**context):
         stage_files(data_dir=context["params"]["data_dir"])
 
-    @task(task_id='create_dynamic_taskgroups')
-    def create_dynamic_taskgroups_taskflow(**context):
-        context = get_current_context()
-        data_dir = context["params"]["data_dir"]
-        timestamp = context['ts_nodash']
-        staging_base_dir = f"{data_dir}/staging/{timestamp}"
-
-    merged = []
-    denormalized = []
-    archived = []
+    merged = {}
+    denormalized = {}
+    archived = {}
     for i in range(1, 6):
-
         with TaskGroup(group_id=f"processing_group_{i}") as processing_group:
             @task(task_id=f"merge_{i}")
             def merge_data_taskflow(subdir):
@@ -116,7 +103,6 @@ def lab6_parallel_processing_taskflow():
                 merge_data(subdir_id=subdir, data_dir=data_dir)
                 return subdir
 
-
             @task(task_id=f"denormalize_{i}")
             def denormalize_data_taskflow(subdir):
                 context = get_current_context()
@@ -127,8 +113,6 @@ def lab6_parallel_processing_taskflow():
                 denormalize_data(subdir_id=subdir, data_dir=data_dir)
                 return subdir
 
-
-
             @task(task_id=f"archive_{i}")
             def archive_files_taskflow(subdir):
                 context = get_current_context()
@@ -138,14 +122,12 @@ def lab6_parallel_processing_taskflow():
                 subdir = os.path.join(staging_base_dir, str(i))
                 archive_files(subdir_id=subdir, data_dir=data_dir)
 
-
             merged[i] = merge_data_taskflow(i)
             denormalized[i] = denormalize_data_taskflow(i)
             archived[i] = archive_files_taskflow(i)
 
-    # stage_files_instance = stage_files_taskflow()
     start >> check_for_files >> [files_exist, files_does_not_exist]
-    files_exist >> stage_files_taskflow() >> create_dynamic_taskgroups_taskflow() >> end
+    files_exist >> stage_files_taskflow() >> end
     files_does_not_exist >> end
 
 
