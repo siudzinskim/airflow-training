@@ -1,6 +1,6 @@
 import pendulum
 from airflow import DAG
-# from airflow.example_dags.example_branch_labels import describe
+from airflow.example_dags.example_branch_labels import describe
 from airflow.models import Param
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import BranchPythonOperator, ShortCircuitOperator

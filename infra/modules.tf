@@ -1,9 +1,9 @@
-### module 001: ###
-data "archive_file" "module-001" {
-  output_path = "${local.repo_path}/dags/M001.zip"
-  type        = "zip"
-  source_dir  = "../modules/M001"
-}
+# ### module 001: ###
+# data "archive_file" "module-001" {
+#   output_path = "${local.repo_path}/dags/M001.zip"
+#   type        = "zip"
+#   source_dir  = "../modules/M001"
+# }
 
 # ### module 002: ###
 # data "archive_file" "module-002" {
