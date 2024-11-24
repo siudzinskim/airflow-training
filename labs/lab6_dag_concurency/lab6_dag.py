@@ -88,9 +88,9 @@ def lab6_parallel_processing_taskflow():
     def stage_files_taskflow(**context):
         stage_files(data_dir=context["params"]["data_dir"])
 
-    merged = []
-    denormalized = []
-    archived = []
+    merged = {}
+    denormalized = {}
+    archived = {}
     for i in range(1, 6):
         with TaskGroup(group_id=f"processing_group_{i}") as processing_group:
             @task(task_id=f"merge_{i}")
