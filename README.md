@@ -21,7 +21,7 @@ This repository contains materials for an Apache Airflow training course, includ
 1. **Clone the repository:**
    ```bash
    cd ~
-   git clone https://github.com/your-username/airflow-training.git
+   git clone https://github.com/siudzinskim/airflow-training.git
    cd airflow-training
    ```
 
