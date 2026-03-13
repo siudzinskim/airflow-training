@@ -64,8 +64,19 @@ def taskflow_bash_dag():
 
     # Define the task dependencies.
     # The 'start' task runs first, followed by the three parallel tasks, and finally the 'end' task.
-    start >> [parallel_1, parallel_2, parallel_3] >> end
+    end.set_upstream(
+        [
+            parallel_1,
+            parallel_2,
+            parallel_3
+        ]
+    )
+    start.set_downstream(
+        [
+            parallel_1,
+            parallel_2,
+            parallel_3
+        ]
+    )
 
-
-# Trigger the DAG execution.
 taskflow_bash_dag()

@@ -4,7 +4,7 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     config_path = "~/.kube/config"
   }
 }
@@ -19,7 +19,7 @@ resource "helm_release" "airflow" {
   repository = "https://airflow.apache.org"
   chart      = "airflow"
   name       = "airflow"
-  version    = "1.15.0"
+  version    = "1.19.0"
   namespace  = kubernetes_namespace.airflow.metadata[0].name
   values = [templatefile("${path.root}/airflow-values.yaml",
      {
@@ -27,7 +27,7 @@ resource "helm_release" "airflow" {
      }
    )]
   # timeout    = "90"
-  timeout    = "360"
+  timeout    = "900"
 }
 
 data "external" "microk8s-web-token" {
@@ -41,24 +41,24 @@ data "kubernetes_service_v1" "kubernetes-dashboard" {
   }
 }
 
-data "kubernetes_service_v1" "airflow-webserver" {
+data "kubernetes_service_v1" "airflow-api-server" {
   metadata {
-    name = "airflow-webserver"
+    name = "airflow-api-server"
     namespace = "airflow"
   }
 }
 
 locals {
   k8s_dashboard = data.kubernetes_service_v1.kubernetes-dashboard.spec != null ? "https://${data.kubernetes_service_v1.kubernetes-dashboard.spec[0].cluster_ip}:443" : ""
-  airflow_webserver = data.kubernetes_service_v1.airflow-webserver.spec != null ? "http://${data.kubernetes_service_v1.airflow-webserver.spec[0].cluster_ip}:8080" : ""
+  airflow_api_server = data.kubernetes_service_v1.airflow-api-server.spec != null ? "http://${data.kubernetes_service_v1.airflow-api-server.spec[0].cluster_ip}:8080" : ""
 }
 
 output "kubernetes-dashboard" {
   value = local.k8s_dashboard
 }
 
-output "airflow-webserver" {
-  value = local.airflow_webserver
+output "airflow-ui" {
+  value = local.airflow_api_server
 }
 
 output "kubernetes-dashboard-token" {
