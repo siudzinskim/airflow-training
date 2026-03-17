@@ -34,10 +34,21 @@ data "external" "microk8s-web-token" {
   program = ["bash", "-c", "echo {\\\"token\\\":\\\"`microk8s kubectl -n kube-system describe secret | grep token: | awk '{print $2}'`\\\"}"]
 }
 
+data "external" "microk8s-web-token-web" {
+  program = ["bash", "-c", "echo {\\\"token\\\":\\\"`microk8s kubectl -n kubernetes-dashboard create token default`\\\"}"]
+}
+
 data "kubernetes_service_v1" "kubernetes-dashboard" {
   metadata {
     name = "kubernetes-dashboard"
     namespace = "kube-system"
+  }
+}
+
+data "kubernetes_service_v1" "kubernetes-dashboard-web" {
+  metadata {
+    name = "kubernetes-dashboard-kong-proxy"
+    namespace = "kubernetes-dashboard"
   }
 }
 
@@ -50,11 +61,12 @@ data "kubernetes_service_v1" "airflow-api-server" {
 
 locals {
   k8s_dashboard = data.kubernetes_service_v1.kubernetes-dashboard.spec != null ? "https://${data.kubernetes_service_v1.kubernetes-dashboard.spec[0].cluster_ip}:443" : ""
+  k8s_dashboard_new = "https://${data.kubernetes_service_v1.kubernetes-dashboard-web.spec[0].cluster_ip}:443"
   airflow_api_server = data.kubernetes_service_v1.airflow-api-server.spec != null ? "http://${data.kubernetes_service_v1.airflow-api-server.spec[0].cluster_ip}:8080" : ""
 }
 
 output "kubernetes-dashboard" {
-  value = local.k8s_dashboard
+  value = local.k8s_dashboard != "" ? local.k8s_dashboard : local.k8s_dashboard_new
 }
 
 output "airflow-ui" {
@@ -62,5 +74,5 @@ output "airflow-ui" {
 }
 
 output "kubernetes-dashboard-token" {
-  value = data.external.microk8s-web-token.result["token"]
+  value = local.k8s_dashboard != "" ? data.external.microk8s-web-token.result["token"] : data.external.microk8s-web-token-web.result["token"]
 }
