@@ -5,8 +5,8 @@ from airflow.models import Connection
 from airflow.operators.bash import BashOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
-from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
-from airflow.providers.http.operators.http import SimpleHttpOperator
+from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
+from airflow.providers.http.operators.http import HttpOperator
 
 
 # Define a DAG with the following parameters:
@@ -59,7 +59,7 @@ with DAG(
     )
 
     # Define a SimpleHttpOperator task that makes an HTTP request
-    http_task = SimpleHttpOperator(
+    http_task = HttpOperator(
         task_id='http_task',
         method='GET',
         http_conn_id='http_dummyjson',  # Make sure you have a connection named 'http_default'
