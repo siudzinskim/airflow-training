@@ -3,7 +3,7 @@ from airflow import DAG
 from airflow import settings
 from airflow.models import Connection
 from airflow.operators.bash import BashOperator
-from airflow.operators.dummy import DummyOperator
+from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 from airflow.providers.http.operators.http import SimpleHttpOperator
@@ -37,7 +37,7 @@ with DAG(
         tags=['module 003', 'operators']
 ) as dag:
     # Define a dummy start task
-    start = DummyOperator(task_id='start')
+    start = EmptyOperator(task_id='start')
 
     # Define a BashOperator task that prints a message
     bash_task = BashOperator(
@@ -78,7 +78,7 @@ with DAG(
     )
 
     # Define a dummy end task
-    end = DummyOperator(task_id='end')
+    end = EmptyOperator(task_id='end')
 
     # Define the task dependencies
     start >> bash_task >> python_task >> http_task >> kubernetes_task >> end

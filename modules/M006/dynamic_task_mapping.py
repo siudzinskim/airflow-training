@@ -4,7 +4,7 @@ import pendulum
 from airflow.decorators import task, dag
 
 @dag(start_date=pendulum.yesterday(),
-     schedule_interval="@once",
+     schedule="@once",
      dag_id="dynamic_task_mapping",
      catchup=False,
      tags=['module 005', 'dynamic_task_mapping']

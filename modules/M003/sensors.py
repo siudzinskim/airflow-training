@@ -5,7 +5,7 @@ from airflow import DAG
 from airflow import settings
 from airflow.models import Connection
 from airflow.operators.bash import BashOperator
-from airflow.operators.dummy import DummyOperator
+from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.sensors.filesystem import FileSensor
@@ -65,7 +65,7 @@ with DAG(
     )
 
     # Define a dummy end task
-    end = DummyOperator(task_id='end')
+    end = EmptyOperator(task_id='end')
 
     # Define the task dependencies
     start >> [wait_for_file, trigger_file_creator_dag]

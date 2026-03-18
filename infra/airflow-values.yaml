@@ -1,7 +1,7 @@
+
 # enable embeded PostgreSQL
 postgresql:
   enabled: true
-
 createUserJob:
   useHelmHooks: false
   applyCustomEnv: false
@@ -14,6 +14,17 @@ scheduler:
 #  env:
 #   - name: _PIP_ADDITIONAL_REQUIREMENTS
 #     value: "duckdb faker"
+  extraVolumes:
+    - name: dags
+      hostPath:
+        path: ${REPO_PATH}/dags/
+        type: Directory
+  extraVolumeMounts:
+    - name: dags
+      mountPath: /opt/airflow/dags
+      readOnly: true
+
+dagProcessor:
   extraVolumes:
     - name: dags
       hostPath:
@@ -58,3 +69,16 @@ airflow:
     - conn_id: local_fs
       conn_type: fs
 
+webserver:
+  enabled: true
+
+apiServer:
+  extraVolumes:
+    - name: dags
+      hostPath:
+        path: ${REPO_PATH}/dags/
+        type: Directory
+  extraVolumeMounts:
+    - name: dags
+      mountPath: /opt/airflow/dags
+      readOnly: true

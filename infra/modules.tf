@@ -1,9 +1,9 @@
 # ### module 001: ###
-# data "archive_file" "module-001" {
-#   output_path = "${local.repo_path}/dags/M001.zip"
-#   type        = "zip"
-#   source_dir  = "../modules/M001"
-# }
+data "archive_file" "module-001" {
+  output_path = "${local.repo_path}/dags/M001.zip"
+  type        = "zip"
+  source_dir  = "../modules/M001"
+}
 
 # ### module 002: ###
 # data "archive_file" "module-002" {
@@ -28,15 +28,15 @@
 #
 # ### module 005: ###
 # data "archive_file" "module-005" {
-#   output_path = "${local.repo_path}/dags/M005.zip"
+#   output_path = "${local.repo_path}/dags/M006.zip"
 #   type        = "zip"
-#   source_dir  = "../modules/M005"
+#   source_dir  = "../modules/M006"
 # }
 #
 # ### module 006: ###
 # data "archive_file" "module-006" {
-#   output_path = "${local.repo_path}/dags/M006.zip"
+#   output_path = "${local.repo_path}/dags/M008.zip"
 #   type        = "zip"
-#   source_dir  = "../modules/M006"
+#   source_dir  = "../modules/M008"
 # }
 #

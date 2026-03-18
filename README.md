@@ -36,15 +36,15 @@ This repository contains materials for an Apache Airflow training course, includ
    poetry install
    ```
 
-4. **Open the project in PyCharm Community Edition** - click `Run Program...` and type:
+4. **Add k8s config:
    ```bash
-   pycharm-community 
+   mkdir ~/.kube/
+   microk8s  microk8s config > ~/.kube/config
+   microk8s enable hostpath-storage
    ```
    
-When pycharm starts open new project in the `~/airflow-training` folder.
-
-5. **Open a terminal in PyCharm:**
-   - You can usually find this under the "Terminal" tab at the bottom of the PyCharm window.
+5. **Open VSCode and a terminal in VSCode window:**
+   - You can usually find this under the "Terminal" tab in main menu (Ctrl+Shift+`).
 
 6. **Navigate to the `infra` folder:**
    ```bash
