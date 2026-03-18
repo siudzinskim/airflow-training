@@ -27,7 +27,7 @@ with DAG(
         schedule=None,
         catchup=False,
         params={"value": Param(1, type="integer")},
-        tags=['module 005', 'branching']
+        tags=['module 006', 'branching']
 ) as dag:
     branch_task = BranchPythonOperator(
         task_id='branch_task',

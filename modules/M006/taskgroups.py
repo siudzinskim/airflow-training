@@ -8,7 +8,7 @@ with DAG(
     start_date=datetime(2024, 11, 4),
     schedule=None,
     catchup=False,
-    tags=['module 005', 'taskgroups']
+    tags=['module 006', 'taskgroups']
 ) as dag:
 
     with TaskGroup('extract_group') as extract_group:

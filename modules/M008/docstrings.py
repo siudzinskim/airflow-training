@@ -8,7 +8,7 @@ with DAG(
         start_date=pendulum.yesterday(),
         schedule=None,
         catchup=False,
-        tags=['module 006', 'docs'],
+        tags=['module 008', 'docs'],
         doc_md="""
 # My DAG Documentation
 

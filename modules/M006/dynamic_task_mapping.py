@@ -7,7 +7,7 @@ from airflow.decorators import task, dag
      schedule="@once",
      dag_id="dynamic_task_mapping",
      catchup=False,
-     tags=['module 005', 'dynamic_task_mapping']
+     tags=['module 006', 'dynamic_task_mapping']
      )
 def my_dag():
     @task

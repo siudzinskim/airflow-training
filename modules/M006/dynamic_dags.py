@@ -24,7 +24,7 @@ dag_configs = [
 
 # Function to create a DAG dynamically
 def create_dag(dag_id, start_date, schedule):
-    @dag(dag_id=dag_id, start_date=start_date, schedule=schedule, catchup=False, tags=['module 005', 'dynamic_dags'])
+    @dag(dag_id=dag_id, start_date=start_date, schedule=schedule, catchup=False, tags=['module 006', 'dynamic_dags'])
     def dynamic_dag():
         @task
         def generate_data():
