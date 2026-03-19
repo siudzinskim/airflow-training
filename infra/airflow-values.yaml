@@ -32,7 +32,25 @@ dagProcessor:
       mountPath: /opt/airflow/dags
       readOnly: true
 
+dagProcessor:
+  extraVolumes:
+    - name: dags
+      hostPath:
+        path: ${REPO_PATH}/dags/
+        type: Directory
+  extraVolumeMounts:
+    - name: dags
+      mountPath: /opt/airflow/dags
+      readOnly: true
+
 workers:
+#  env:
+#    - name: AIRFLOW_CONN_HTTP_DUMMYJSON
+#      value: '{"conn_type": "http_dummyjson","host": "https://dummyjson.com","conn_type": "http"}'
+#    - name: AIRFLOW_CONN_FS_DEFAULT
+#      value: '{"conn_type": "fs_default","conn_type": "fs"}'
+#    - name: _PIP_ADDITIONAL_REQUIREMENTS
+#      value: "duckdb faker"
   extraVolumes:
     - name: dags
       hostPath:
@@ -59,6 +77,19 @@ airflow:
     - conn_id: local_fs
       conn_type: fs
 
+webserver:
+  enabled: true
+
+apiServer:
+  extraVolumes:
+    - name: dags
+      hostPath:
+        path: ${REPO_PATH}/dags/
+        type: Directory
+  extraVolumeMounts:
+    - name: dags
+      mountPath: /opt/airflow/dags
+      readOnly: true
 #global:
 #  env:
 #    - name: _PIP_ADDITIONAL_REQUIREMENTS
