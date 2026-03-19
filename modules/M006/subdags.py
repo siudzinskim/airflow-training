@@ -27,7 +27,7 @@ with DAG(
     start_date=datetime(2024, 11, 4),
     schedule=None,
     catchup=False,
-    tags=['module 005', 'subdags']
+    tags=['module 006', 'subdags']
 ) as dag:
     start_task = BashOperator(
         task_id='start_task',

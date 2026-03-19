@@ -12,7 +12,7 @@ with DAG(
         start_date=pendulum.yesterday(),
         schedule=None,
         catchup=False,
-        tags=['module 005', 'conditionals']
+        tags=['module 006', 'conditionals']
 ) as dag:
     task_a = BashOperator(
         task_id='task_a',
@@ -35,7 +35,7 @@ with DAG(
         start_date=pendulum.yesterday(),
         schedule=None,
         catchup=False,
-        tags=['module 005', 'conditionals']
+        tags=['module 006', 'conditionals']
 ) as dag:
     def choose_branch(**context):
         value = context['dag_run'].conf.get('value', 1)
@@ -68,7 +68,7 @@ with DAG(
         start_date=pendulum.yesterday(),
         schedule=None,
         catchup=False,
-        tags=['module 005', 'conditionals']
+        tags=['module 006', 'conditionals']
 ) as dag:
     create_resource = BashOperator(
         task_id='create_resource',
@@ -92,7 +92,7 @@ with DAG(
         start_date=pendulum.today('UTC').subtract(days=7),
         schedule='@daily',
         catchup=True,
-        tags=['module 005', 'conditionals']
+        tags=['module 006', 'conditionals']
 ) as dag:
     latest_only_task = LatestOnlyOperator(task_id='latest_only_task')
     task_a = BashOperator(
@@ -108,7 +108,7 @@ with DAG(
         start_date=pendulum.today('UTC').subtract(days=7),
         schedule='@daily',
         catchup=True,
-        tags=['module 005', 'conditionals']
+        tags=['module 006', 'conditionals']
 ) as dag:
     task_a = BashOperator(
         task_id='task_a',

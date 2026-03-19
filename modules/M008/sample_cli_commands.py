@@ -8,7 +8,7 @@ with DAG(
         start_date=pendulum.yesterday(),
         schedule=None,
         catchup=False,
-        tags=['module 006', 'cli']
+        tags=['module 008', 'cli']
 ) as dag:
     print_date = BashOperator(
         task_id='print_date',
